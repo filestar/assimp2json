@@ -20,7 +20,9 @@ Licensed under a 3-clause BSD license. See the LICENSE file for more information
 #define CURRENT_FORMAT_VERSION 100
 
 // grab scoped_ptr from assimp to avoid a dependency on boost. 
-#include <assimp/../../code/BoostWorkaround/boost/scoped_ptr.hpp>
+//#include <assimp/../../code/BoostWorkaround/boost/scoped_ptr.hpp>
+//	We 're in 2017 so now we can use boost
+#include <boost/scoped_ptr.hpp>
 
 #include "mesh_splitter.h"
 
