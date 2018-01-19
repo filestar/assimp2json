@@ -1,9 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 project (assimp2json)
 
-option(EXECUTABLE "A2J exeutable" OFF)
-option(SHARED_LIB "A2J shared library" ON)
-
 # The version number.
 set (ASSIMP2JSON_VERSION_MAJOR 2)
 set (ASSIMP2JSON_VERSION_MINOR 0)
@@ -37,17 +34,13 @@ set(A2J_ENTRY   assimp2json/main.cpp)
 
 set(A2J_NODE   node-binding/a2j_node_js.cpp
                             node-binding/AssimpToJson.cpp
-                            node-binding/AssimpToJson.hpp)
+                            node-binding/AssimpToJson.hpp node-binding/plugin.cpp node-binding/plugin.hpp node-binding/library.cpp)
 
-if (SHARED_LIB)
-    add_library(Bocketassimp2json SHARED ${SRC} ${A2J_NODE})
-    target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
-endif(SHARED_LIB)
+add_library(Bocketassimp2json SHARED ${SRC} ${A2J_NODE})
+target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
 
-if(EXECUTABLE)
-    add_executable(assimp2json	${SRC} ${A2J_ENTRY})
-    target_link_libraries (assimp2json  ${EXTRA_LIBS})
-endif(EXECUTABLE)
+add_executable(assimp2json	${SRC} ${A2J_ENTRY})
+target_link_libraries (assimp2json  ${EXTRA_LIBS})
 
 if( MSVC_IDE )
    add_custom_command(
