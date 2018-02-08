@@ -38,6 +38,7 @@ set(ATOJSON_SRC node-binding/AssimpToJson.cpp
 
 add_library(Bocketassimp2json SHARED ${SRC} ${ATOJSON_SRC})
 target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
+set_target_properties(Bocketassimp2json PROPERTIES SUFFIX ".module")
 
 add_executable(assimp2json	${SRC} assimp2json/main.cpp)
 target_link_libraries (assimp2json  ${EXTRA_LIBS})
