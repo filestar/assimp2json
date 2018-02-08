@@ -1,16 +1,13 @@
 cmake_minimum_required (VERSION 2.6)
 project (assimp2json)
 
-option(EXECUTABLE "A2J exeutable" ON)
-option(SHARED_LIB "A2J shared library" ON)
-
 # The version number.
 set (ASSIMP2JSON_VERSION_MAJOR 2)
 set (ASSIMP2JSON_VERSION_MINOR 0)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../lib )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 
 
 # configure a header file to pass some of the CMake settings
@@ -33,19 +30,17 @@ set(SRC assimp2json/cencode.c
                 assimp2json/json_exporter.cpp
                 assimp2json/mesh_splitter.cpp)
 
-set(A2J_ENTRY   assimp2json/main.cpp)
+set(ATOJSON_ENTRY   assimp2json/main.cpp)
 
-set(A2J_NODE   node-binding/a2j_node_js.cpp
-                            node-binding/AssimpToJson.cpp
-                            node-binding/AssimpToJson.hpp)
+set(ATOJSON_SRC node-binding/AssimpToJson.cpp
+                                 node-binding/AssimpToJson.hpp
+                                 node-binding/library.cpp)
 
-if (SHARED_LIB)
-    add_library(Bocketassimp2json SHARED ${SRC} ${A2J_NODE})
-    target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
-endif(SHARED_LIB)
+add_library(Bocketassimp2json SHARED ${SRC} ${ATOJSON_SRC})
+target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
 
-    add_executable(assimp2json	${SRC} ${A2J_ENTRY})
-    target_link_libraries (assimp2json  ${EXTRA_LIBS})
+add_executable(assimp2json	${SRC} assimp2json/main.cpp)
+target_link_libraries (assimp2json  ${EXTRA_LIBS})
 
 if( MSVC_IDE )
    add_custom_command(
