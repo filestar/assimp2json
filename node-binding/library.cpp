@@ -11,6 +11,7 @@ extern "C" {
         return  0;
     }
 
+
     int load(const char *str) {
         try {
             std::string path = str;
@@ -33,4 +34,9 @@ extern "C" {
         }
         return 0;
     }
+
+    int exportFile(const char *str, int type) {
+
+    }
+
 }
