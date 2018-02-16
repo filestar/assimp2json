@@ -34,7 +34,7 @@ set(ATOJSON_ENTRY   assimp2json/main.cpp)
 
 set(ATOJSON_SRC node-binding/AssimpToJson.cpp
                                  node-binding/AssimpToJson.hpp
-                                 node-binding/library.cpp)
+                                 node-binding/library.cpp node-binding/AssimpExporter.cpp node-binding/AssimpExporter.hpp)
 
 add_library(Bocketassimp2json SHARED ${SRC} ${ATOJSON_SRC})
 target_link_libraries (Bocketassimp2json  ${EXTRA_LIBS})
