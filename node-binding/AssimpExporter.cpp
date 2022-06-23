@@ -5,7 +5,7 @@
 #include <iostream>
 #include "assimp/Exporter.hpp"
 #include "AssimpExporter.hpp"
-#include "../assimp/code/STLExporter.h"
+#include "../assimp/code/AssetLib/STL/STLExporter.h"
 
 AssimpExporter::AssimpExporter(std::string &in, std::string &out)
 :   _in(in),
