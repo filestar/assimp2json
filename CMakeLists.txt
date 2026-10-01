@@ -1,6 +1,12 @@
 cmake_minimum_required (VERSION 2.6)
 project (assimp2json)
 
+# assimp 6.x headers use inline variables (include/assimp/defs.h), so the tool that
+# includes them has to be built as C++17. assimp builds itself as C++17 already; this
+# is for assimp2json's own sources.
+set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # The version number.
 set (ASSIMP2JSON_VERSION_MAJOR 2)
 set (ASSIMP2JSON_VERSION_MINOR 0)
@@ -43,13 +49,14 @@ set_target_properties(Bocketassimp2json PROPERTIES SUFFIX ".module")
 add_executable(assimp2json	${SRC} assimp2json/main.cpp)
 target_link_libraries (assimp2json  ${EXTRA_LIBS})
 
-if( MSVC_IDE )
+# A static assimp writes no DLL to copy; the copy only makes sense for a shared build.
+if( MSVC_IDE AND BUILD_SHARED_LIBS )
    add_custom_command(
       TARGET assimp2json
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/assimp/code/$(ConfigurationName)/assimp.dll ${CMAKE_BINARY_DIR}/$(ConfigurationName)/assimp.dll
    )
-endif( MSVC_IDE )
+endif()
 
 INSTALL( TARGETS assimp2json 
 	 LIBRARY DESTINATION ${ASSIMP_LIB_INSTALL_DIR}
