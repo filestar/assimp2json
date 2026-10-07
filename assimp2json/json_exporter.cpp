@@ -192,15 +192,30 @@ private:
 	std::stringstream& LiteralToString(std::stringstream& stream, const aiString& s) {
 		std::string t;
 
-		// escape backslashes and single quotes, both would render the JSON invalid if left as is
+		// JSON (RFC 8259) escapes only the double quote, the backslash and control characters. A single quote
+		// stays as it is: \' is not a JSON escape, and one name holding it made the whole file invalid.
 		t.reserve(s.length);
 		for(size_t i = 0; i < s.length; ++i) {
-			
-			if (s.data[i] == '\\' || s.data[i] == '\'' || s.data[i] == '\"') {
-				t.push_back('\\');
+			const unsigned char c = static_cast<unsigned char>(s.data[i]);
+			switch (c) {
+			case '\"': t += "\\\""; break;
+			case '\\': t += "\\\\"; break;
+			case '\b': t += "\\b"; break;
+			case '\f': t += "\\f"; break;
+			case '\n': t += "\\n"; break;
+			case '\r': t += "\\r"; break;
+			case '\t': t += "\\t"; break;
+			default:
+				if (c < 0x20) {
+					static const char hex[] = "0123456789abcdef";
+					t += "\\u00";
+					t.push_back(hex[c >> 4]);
+					t.push_back(hex[c & 0xF]);
+				}
+				else {
+					t.push_back(static_cast<char>(c));
+				}
 			}
-
-			t.push_back(s.data[i]);
 		}
 		stream << "\"";
 		stream << t;
